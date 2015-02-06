@@ -45,6 +45,12 @@ public class HomeController {
 		return "home";
 	}
 	
+	@RequestMapping(value="WriteForm")
+	public String goWriteForm(Model model){
+		return "board/writeForm";
+		
+	}
+	
 	@RequestMapping(value="WriteBoard",method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView writeArticle(Article article)throws Exception{
 		System.out.println(article.getTitle());

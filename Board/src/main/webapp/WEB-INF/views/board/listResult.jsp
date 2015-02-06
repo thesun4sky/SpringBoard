@@ -47,6 +47,9 @@
 					
 					<tr>
 						<td colspan="5">
+							<c:set var="beginPage" value="${listModel.requestPage}"/>
+							<c:set var="endPage" value="${listModel. }"/>
+							
 							<c:if test="${beginPage>10 }">
 								<a href="listView?p=${beginPage-1 }">이전</a>
 							</c:if>
@@ -63,6 +66,15 @@
 		</tbody>
 		
 	</table>
-	<button id="btn_submit" class="btn btn-default"><a href="WriteBoard">작성</a></button>
+	<button id="btn_submit" class="btn btn-default">작성</button>
+	
+	<script>
+	$(function(){
+		 $("#btn_submit").click(function(){
+			 $("#mainTable").load("WriteForm","p="+p);
+		 });
+	});
+	
+	</script>
 </body>
 </html>

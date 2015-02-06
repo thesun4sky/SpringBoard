@@ -107,13 +107,13 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		int totalArticleCount = selectCount();
-		
+		System.out.println("totalArticleCount = " + totalArticleCount);
 		if(totalArticleCount ==0){
 			return new ArticleListModel();
 		}
 		
 		int totalPageCount = calculateTotalPageCount(totalArticleCount);
-		
+		System.out.println("totalPageCount = " + totalPageCount);
 		int firstRow = (requestPageNumber-1) * COUNT_PER_PAGE+1;
 		//requestPageNumber는 1 부터 시작 해
 		//ex) 1페이지 10개  (1-1) * 10 + 1 = 1 첫번째 글부터 시작 서
@@ -126,7 +126,8 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		List<Article> articleList = select(firstRow,endRow);
-		
+		System.out.println("firstRow = " + firstRow+ " endRow = "+ endRow);
+		System.out.println("requestPageNumber = " + requestPageNumber);
 		ArticleListModel articleListView = new ArticleListModel(articleList, requestPageNumber, totalPageCount, firstRow, endRow);
 		return articleListView;
 	}
