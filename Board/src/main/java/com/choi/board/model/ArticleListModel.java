@@ -10,7 +10,11 @@ public class ArticleListModel {
 	private int totalPageCount; // 총페이지 번호
 	private int startRow; //시작 글 번호
 	private int endRow; //끝 번호
+	private int beginPage;
+	private int endPage;
 	
+	
+
 	public ArticleListModel(){
 		this(new ArrayList<Article>(),0,0,0,0);
 	}
@@ -67,6 +71,21 @@ public class ArticleListModel {
 	
 	public boolean isHasArticle(){
 		return ! articleList.isEmpty();
+	}
+	public int getBeginPage() {
+		return beginPage;
+	}
+
+	public void setBeginPage(int beginPage) {
+		this.beginPage = beginPage;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
 	}
 	
 }

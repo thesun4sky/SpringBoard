@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import com.choi.board.model.Article;
 import com.choi.board.model.ArticleListModel;
@@ -67,9 +66,25 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public Article read(int article_id) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public Article read(int article_id,int requestPageNumber) throws Exception {
+		StringBuffer sql = new StringBuffer();
+		sql.append("select title,writer_name,content where article_id = ?");
+
+		
+		RowMapper<Article> mapper = new RowMapper<Article>() {
+		    public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
+		    	Article readArticle = new Article();
+		    	readArticle.setTitle(rs.getString("title"));
+		    	readArticle.setWriterName(rs.getString("WriterName"));
+		    	readArticle.setContent(rs.getString("content"));
+		      return readArticle;
+		    }
+		  };
+		  
+		Article article =(Article)jdbcTemplate.queryForObject(sql.toString(),new Object[]{article_id},mapper);
+		
+		
+		return article;
 	}
 
 	public List<Article> select(int firstRow,int endRow) throws Exception {
@@ -80,8 +95,9 @@ public class ArticleDaoImpl implements ArticleDao {
 		sql.append(" from article order by sequence_no desc limit ? , ?");
 		
 		
+		
 		List<Article> list = new ArrayList<Article>();
-		list = jdbcTemplate.query(sql.toString(),new Object[]{firstRow-1,endRow-firstRow+1},new RowMapper<Article>(){
+		list = jdbcTemplate.query(sql.toString(),new Object[]{firstRow,endRow},new RowMapper<Article>(){
 			public Article mapRow(ResultSet rs,int rowNum)throws SQLException{
 				Article article = new Article();
 				article.setId(rs.getInt("article_id"));
@@ -113,12 +129,12 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		int totalPageCount = calculateTotalPageCount(totalArticleCount);
-		System.out.println("totalPageCount = " + totalPageCount);
-		int firstRow = (requestPageNumber-1) * COUNT_PER_PAGE+1;
+		int firstRow = (requestPageNumber-1) * COUNT_PER_PAGE;
 		//requestPageNumber는 1 부터 시작 해
-		//ex) 1페이지 10개  (1-1) * 10 + 1 = 1 첫번째 글부터 시작 서
-		int endRow = firstRow + COUNT_PER_PAGE-1;
-		//1+9 니까 끝나는 글의 경우 10번째 글이 되어야 함
+		//ex) 1페이지 10개  (1-1) * 10  = 0  첫번째 글부터 시작
+		int endRow = firstRow + COUNT_PER_PAGE;
+		//0+10 니까 끝나는 글의 경우 10번째 글이 되어야 함
+		
 		
 		if(endRow > totalArticleCount){
 			endRow = totalArticleCount;
@@ -126,9 +142,18 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		List<Article> articleList = select(firstRow,endRow);
-		System.out.println("firstRow = " + firstRow+ " endRow = "+ endRow);
-		System.out.println("requestPageNumber = " + requestPageNumber);
 		ArticleListModel articleListView = new ArticleListModel(articleList, requestPageNumber, totalPageCount, firstRow, endRow);
+		
+		int beginPage = (articleListView.getRequestPage())/10*10+1;
+		int endPage = beginPage + 9;
+		System.out.println("beginPage = " + beginPage);
+		
+		if(endPage > articleListView.getTotalPageCount()){
+			endPage = articleListView.getTotalPageCount();
+		}
+		
+		articleListView.setBeginPage(beginPage);
+		articleListView.setEndPage(endPage);
 		return articleListView;
 	}
 
@@ -139,8 +164,9 @@ public class ArticleDaoImpl implements ArticleDao {
 		}
 		
 		int pageCount = totalArticleCount/COUNT_PER_PAGE;
+		//페이지에 대한 총 개수를 가져온다 ex) 178개의 글이 있을 경우 178/10 할 경우 총 17.8이 나오며 우선 17페이지로 하며
 		if(totalArticleCount %COUNT_PER_PAGE>0){
-			pageCount++; //나머지가 있을경우 해당 페이지를 표시해 줘야 하니까
+			pageCount++; //나머지가 있을경우 해당 페이지를 표시해 줘야 하니까 1페이즈를 증가 하여 총 18 페이지가 된다.
 		}
 		return pageCount;
 	}
@@ -150,5 +176,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		int count = jdbcTemplate.queryForInt("select count(*) from article");
 		return count;
 	}
+
+
 
 }

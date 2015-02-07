@@ -20,7 +20,7 @@ create table article(
 	index (sequence_no)
 );
 
-
+select * from article
 /*
 article 테이블 
 article_id		int			게시글번호(PK)

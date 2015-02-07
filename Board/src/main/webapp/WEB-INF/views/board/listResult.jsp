@@ -24,7 +24,7 @@
 			<c:choose>
 				<c:when test="${listModel.hasArticle == false }">
 					<tr>
-						<td>글이 없습니다.</td>
+						<td colspan="5">글이 없습니다.</td>
 					</tr>
 				</c:when>
 				
@@ -47,17 +47,17 @@
 					
 					<tr>
 						<td colspan="5">
-							<c:set var="beginPage" value="${listModel.requestPage}"/>
-							<c:set var="endPage" value="${listModel. }"/>
+							<c:set var="beginPage" value="${listModel.beginPage}"/>
+							<c:set var="endPage" value="${listModel.endPage}"/>
 							
 							<c:if test="${beginPage>10 }">
-								<a href="listView?p=${beginPage-1 }">이전</a>
+								<a href="javascript:goNumberPage(${beginPage-1 })">이전</a>
 							</c:if>
-							<c:forEach var="pno" begin="${beginPage }" end="${endPage }">
-								<a href="listView?p=${pno }">[${pno}]</a>
+							<c:forEach var="pno" begin="${beginPage}" end="${endPage }">
+								<a href="javascript:goNumberPage(${pno})">[${pno}]</a>
 							</c:forEach>
 							<c:if test="${endPage<listModel.totalPageCount }">
-								<a href="listView?p=${endPage+1 }">다음</a>
+								<a href="javascript:goNumberPage(${endPage+1 })">다음</a>
 							</c:if>
 						</td>
 					</tr>
@@ -75,6 +75,13 @@
 		 });
 	});
 	
+	function goNumberPage(pageNumber){
+		$("#mainTable").load("listView","p="+pageNumber);
+	}
+	
+	function goReadArticle(query){
+		$("#mainTable").load("readArticle",query);
+	}
 	</script>
 </body>
 </html>

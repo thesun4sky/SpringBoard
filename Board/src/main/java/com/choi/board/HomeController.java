@@ -70,7 +70,18 @@ public class HomeController {
 		System.out.println(requestPageNumber);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("listModel", articleDao.getArticleList(Integer.parseInt(requestPageNumber)));
+		
 		mav.setViewName("board/listResult");
+		return mav;
+	}
+	
+	@RequestMapping(value="readArticle",method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView readArticle(@RequestParam(value="p")String requestPageNumber,@RequestParam(value="articleId") String articleId) throws Exception{
+		
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("article",articleDao.read(Integer.parseInt(articleId),Integer.parseInt(articleId)));
+		mav.addObject("requestPageNumber",requestPageNumber);
+		mav.setViewName("board/readArticle");
 		return mav;
 	}
 }
