@@ -79,7 +79,7 @@ public class HomeController {
 	public ModelAndView readArticle(@RequestParam(value="p")String requestPageNumber,@RequestParam(value="articleId") String articleId) throws Exception{
 		
 		ModelAndView mav = new ModelAndView();
-		mav.addObject("article",articleDao.read(Integer.parseInt(articleId),Integer.parseInt(articleId)));
+		mav.addObject("Article",articleDao.read(Integer.parseInt(articleId),Integer.parseInt(articleId)));
 		mav.addObject("requestPageNumber",requestPageNumber);
 		mav.setViewName("board/readArticle");
 		return mav;

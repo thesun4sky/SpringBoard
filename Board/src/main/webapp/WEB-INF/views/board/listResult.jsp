@@ -37,7 +37,7 @@
 									<c:forEach begin="1" end="${article.level }">-</c:forEach>&gt;
 								</c:if>
 								<c:set var ="query" value="articleId=${article.id}&p=${listModel.requestPage }"/>
-								<a href="<c:url value="read?${query }"/>">${article.title }</a>
+								<a href="javascript:goReadArticle('<c:url value="${query}"/>')">${article.title }</a>
 							</td>
 							<td>${article.writerName }</td>
 							<td>${article.postingDate }</td>
