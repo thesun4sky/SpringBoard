@@ -66,6 +66,7 @@
 		</tbody>
 		
 	</table>
+	<div>${currentPage}</div>
 	<button id="btn_submit" class="btn btn-default">작성</button>
 	
 	<script>

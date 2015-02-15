@@ -13,7 +13,16 @@ public class Article {
 	private String password;
 	private String title;
 	private String content;
+	private int currentPage;
 	
+	
+	
+	public int getCurrentPage() {
+		return currentPage;
+	}
+	public void setCurrentPage(int currentPage) {
+		this.currentPage = currentPage;
+	}
 	public int getId() {
 		return id;
 	}

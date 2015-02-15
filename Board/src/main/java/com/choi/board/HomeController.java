@@ -64,12 +64,23 @@ public class HomeController {
 		return mav;
 		
 	}
+	@RequestMapping(value="replyBoard",method = {RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView replyArticle(Article article,@RequestParam(value="currentPage") String requestPageNumber,@RequestParam(value="parentId") String parentId) throws Exception{
+		
+		System.out.println("requestPageNumber = "+requestPageNumber);
+		System.out.println("parentId = "+parentId);
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("home");
+		return mav;
+	}
+	
 	
 	@RequestMapping(value="listView",method = {RequestMethod.GET, RequestMethod.POST})
 	public ModelAndView selectPage(@RequestParam(value="p") String requestPageNumber) throws Exception{
 		System.out.println(requestPageNumber);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("listModel", articleDao.getArticleList(Integer.parseInt(requestPageNumber)));
+		mav.addObject("currentPage",requestPageNumber);
 		
 		mav.setViewName("board/listResult");
 		return mav;
@@ -80,8 +91,21 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("Article",articleDao.read(Integer.parseInt(articleId),Integer.parseInt(articleId)));
-		mav.addObject("requestPageNumber",requestPageNumber);
+		mav.addObject("currentPage",requestPageNumber);
 		mav.setViewName("board/readArticle");
+		return mav;
+	}
+	
+	@RequestMapping(value="replyArticle",method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView replyPage(@RequestParam(value="p")String requestPageNumber,@RequestParam(value="parentId") String parentId){
+		System.out.println("requestPageNumber"+requestPageNumber);
+		System.out.println("parentId" + parentId);
+		ModelAndView mav = new ModelAndView();
+		
+		mav.addObject("currentPage", requestPageNumber);
+		mav.addObject("parentId",parentId);
+		mav.setViewName("board/replyArticle");
+		
 		return mav;
 	}
 }

@@ -68,12 +68,13 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public Article read(int article_id,int requestPageNumber) throws Exception {
 		StringBuffer sql = new StringBuffer();
-		sql.append("select title,writer_name,content from article where article_id = ?");
+		sql.append("select article_id,title,writer_name,content from article where article_id = ?");
 
 		
 		RowMapper<Article> mapper = new RowMapper<Article>() {
 		    public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
 		    	Article readArticle = new Article();
+		    	readArticle.setId(rs.getInt("article_id"));
 		    	readArticle.setTitle(rs.getString("title"));
 		    	readArticle.setWriterName(rs.getString("writer_name"));
 		    	readArticle.setContent(rs.getString("content"));
