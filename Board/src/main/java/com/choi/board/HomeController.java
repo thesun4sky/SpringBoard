@@ -16,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.choi.board.dao.ArticleDaoImpl;
 import com.choi.board.model.Article;
+import com.choi.board.util.CalcSeq;
 
 /**
  * Handles requests for the application home page.
@@ -25,7 +26,8 @@ public class HomeController {
 	
 	@Autowired
 	ArticleDaoImpl articleDao;
-	
+	@Autowired
+	CalcSeq calcSeq;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
@@ -105,6 +107,31 @@ public class HomeController {
 		mav.addObject("currentPage", requestPageNumber);
 		mav.addObject("parentId",parentId);
 		mav.setViewName("board/replyArticle");
+		
+		return mav;
+	}
+	
+	@RequestMapping(value="replyWrite",method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView replyWrite(Article article) throws Exception{
+		
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("sequence Number 계산 시작");
+		Article parent = articleDao.read(article.getId(), article.getCurrentPage());
+		System.out.println("parent 세팅 끝");
+		String searchMaxSeqNum = parent.getSequenceNumber();
+		System.out.println("parent sequenceNumber = " +searchMaxSeqNum );
+		String searchMinSeqNum = calcSeq.getSearchMinSeqNum(parent);
+		String lastChildSeq = articleDao.selectLastSequenceNumber(searchMaxSeqNum, searchMinSeqNum);
+		String sequenceNumber = calcSeq.getSequenceNumber(parent, lastChildSeq);
+		
+		System.out.println("sequence Number 계산 끝");
+		
+		article.setGroupId(parent.getGroupId());
+		article.setSequenceNumber(sequenceNumber);
+		articleDao.insert(article);
+		
+		mav.setViewName("home");
 		
 		return mav;
 	}

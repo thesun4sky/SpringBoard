@@ -30,14 +30,20 @@ public class ArticleDaoImpl implements ArticleDao {
 	@Override
 	public void insert(Article article) throws Exception {
 		// TODO Auto-generated method stub
+		System.out.println("Insert Start");
 		StringBuffer sql = new StringBuffer();
 		
 		sql.append("insert into article ");
 		sql.append("(group_id,sequence_no,posting_date,read_count,writer_name, ");
 		sql.append("password,title,content) ");
 		sql.append("values(?,?,?,0,?,?,?,?)");
-		int groupId = IdGenerator.getInstance().generateNextId("article",jdbcTemplate);
-		article.setGroupId(groupId);
+		
+		int groupId = article.getGroupId();
+		if(groupId == 0 ){
+			groupId = IdGenerator.getInstance().generateNextId("article",jdbcTemplate);
+			article.setGroupId(groupId);
+		}
+		
 		article.setPostingDate(new Date());
 		DecimalFormat decimalFormat = new DecimalFormat("0000000000");
 		article.setSequenceNumber(decimalFormat.format(groupId)+"999999");
@@ -67,10 +73,11 @@ public class ArticleDaoImpl implements ArticleDao {
 
 	@Override
 	public Article read(int article_id,int requestPageNumber) throws Exception {
+		System.out.println("read 시작");
 		StringBuffer sql = new StringBuffer();
-		sql.append("select article_id,title,writer_name,content from article where article_id = ?");
+		sql.append("select article_id,title,writer_name,content,sequence_no,group_id from article where article_id = ?");
 
-		
+		System.out.println("article_id =" + article_id);
 		RowMapper<Article> mapper = new RowMapper<Article>() {
 		    public Article mapRow(ResultSet rs, int rowNum) throws SQLException {
 		    	Article readArticle = new Article();
@@ -78,12 +85,14 @@ public class ArticleDaoImpl implements ArticleDao {
 		    	readArticle.setTitle(rs.getString("title"));
 		    	readArticle.setWriterName(rs.getString("writer_name"));
 		    	readArticle.setContent(rs.getString("content"));
+		    	readArticle.setSequenceNumber(rs.getString("sequence_no"));
+		    	readArticle.setGroupId(rs.getInt("group_id"));
 		      return readArticle;
 		    }
 		  };
 		  
 		Article article =(Article)jdbcTemplate.queryForObject(sql.toString(),new Object[]{article_id},mapper);
-		
+		System.out.println("read 정상 종료");
 		
 		return article;
 	}
@@ -176,6 +185,20 @@ public class ArticleDaoImpl implements ArticleDao {
 	public int selectCount() {
 		int count = jdbcTemplate.queryForInt("select count(*) from article");
 		return count;
+	}
+
+	public String selectLastSequenceNumber(String searchMaxSeqNum,
+			String searchMinSeqNum) {
+
+		StringBuffer sql = new StringBuffer();
+		sql.append("select min(sequence_no) from article where sequence_no< ? and sequence_no >=?");
+		
+		
+		return jdbcTemplate.queryForObject(sql.toString(),new Object[]{searchMaxSeqNum,searchMinSeqNum},String.class);
+		
+		
+		
+
 	}
 
 
