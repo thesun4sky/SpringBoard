@@ -30,7 +30,7 @@
 				<textarea id="content" name="content" class="form-control" cols="40" rows="5"></textarea>
 			</div>
 			<input type="text" id="currentPage" value="${currentPage}">
-			<input type="text" id="id" value="${parentId}">
+			<input type="text" id="parentId" value="${parentId}">
 			<button id="btn_submit" class="btn btn-default">작성</button>
 		</form>
 	</div>
@@ -40,12 +40,14 @@
 		$(function(){
 		 $("#btn_submit").click(function(){
 			$.ajax({
-				url:"replyBoard&currentPage="+$("#currentPage").val()+"&parentId="+$("#parentId").val(),
+				url:"replyWrite",
 				type:"post",
 				data: {	"title" : $("#title").val(),
 						"writerName" :$("#writerName").val(),
 						"password" :$("#password").val(),
-						"content" : $("#content").val(),		
+						"content" : $("#content").val(),
+						"id": $("#parentId").val(),
+						"currentPage": $("#currentPage").val()
 						}, 
 				dataType: "json",   // 데이터타입을 JSON형식으로 지정
 				contentType : "application/x-www-form-urlencoded; charset=utf-8",
