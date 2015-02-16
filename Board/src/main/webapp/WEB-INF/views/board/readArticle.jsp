@@ -95,10 +95,14 @@
 			dataType: "json",   // 데이터타입을 JSON형식으로 지정
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			success: function(data,textStaus,jqXHR){
-				
+				console.log(data);
+				console.log(textStatus);
+				console.log(jqXHR);
 			},
 			error:function(jqXHR,textStatus,errorThrown){
-				
+				console.log(jqXHR);
+				console.log(textStatus);
+				console.log(errorThrown);
 			}
 		})	
 	}

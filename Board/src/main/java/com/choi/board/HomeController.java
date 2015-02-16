@@ -151,8 +151,7 @@ public class HomeController {
 				//update
 				System.out.println("update");
 				mav.addObject("Article",article);
-				mav.setViewName("updateArticle");
-				
+				mav.setViewName("board/updateForm");
 			}else{
 				//delete
 				System.out.println("delete");
@@ -162,7 +161,7 @@ public class HomeController {
 		}else{
 			mav.setViewName("home");
 		}
-		
+		System.out.println("돌아가야지 ");
 		return mav;
 	}
 	
