@@ -45,3 +45,5 @@ id_sequence테이블은 게시글의 그룹번호 값을 생성할때 사용된�
 마지막에 사용된 값을 저장 될때 사용한다.
 
 */
+
+delete From article;

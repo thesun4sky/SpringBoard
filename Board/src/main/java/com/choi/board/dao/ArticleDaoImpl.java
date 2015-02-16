@@ -68,16 +68,19 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public void delete(Article article) throws Exception {
+	public void delete(int articleId) throws Exception {
 		// TODO Auto-generated method stub
-
+		StringBuffer sql = new StringBuffer();
+		sql.append("delete from article where article_id = ?");
+		
+		jdbcTemplate.update(sql.toString(), articleId);
 	}
 
 	@Override
 	public Article read(int article_id,int requestPageNumber) throws Exception {
 		System.out.println("read 시작");
 		StringBuffer sql = new StringBuffer();
-		sql.append("select article_id,title,writer_name,content,sequence_no,group_id from article where article_id = ?");
+		sql.append("select article_id,title,writer_name,content,sequence_no,group_id,password from article where article_id = ?");
 
 		System.out.println("article_id =" + article_id);
 		RowMapper<Article> mapper = new RowMapper<Article>() {
@@ -89,6 +92,7 @@ public class ArticleDaoImpl implements ArticleDao {
 		    	readArticle.setContent(rs.getString("content"));
 		    	readArticle.setSequenceNumber(rs.getString("sequence_no"));
 		    	readArticle.setGroupId(rs.getInt("group_id"));
+		    	readArticle.setPassword(rs.getString("password"));
 		      return readArticle;
 		    }
 		  };

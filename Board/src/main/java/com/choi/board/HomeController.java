@@ -135,4 +135,36 @@ public class HomeController {
 		
 		return mav;
 	}
+	
+	@RequestMapping(value="pwConfirm",method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView pwConfirm(@RequestParam(value="id") String articleId,@RequestParam(value="action")String action,@RequestParam(value="password") String password,@RequestParam(value="currentPage") String currentPage) throws  Exception{
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("articleId = " + articleId);
+		System.out.println("currentPage = " + currentPage);
+		System.out.println("password = " + password);
+		
+		Article article = articleDao.read(Integer.parseInt(articleId), Integer.parseInt(currentPage));
+		
+		if(article.getPassword().equalsIgnoreCase(password)){
+			if(action.equalsIgnoreCase("update")){
+				//update
+				System.out.println("update");
+				mav.addObject("Article",article);
+				mav.setViewName("updateArticle");
+				
+			}else{
+				//delete
+				System.out.println("delete");
+				articleDao.delete(Integer.parseInt(articleId));
+				mav.setViewName("home");
+			}
+		}else{
+			mav.setViewName("home");
+		}
+		
+		return mav;
+	}
+	
+	
 }

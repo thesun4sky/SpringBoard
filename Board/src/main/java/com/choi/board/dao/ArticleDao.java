@@ -11,7 +11,7 @@ public interface ArticleDao {
 	
 	public void insert(Article article)throws Exception;
 	public void updeate(Article article)throws Exception;
-	public void delete(Article article)throws Exception;
+	public void delete(int articleId)throws Exception;
 	public Article read(int article_id,int requestPageNumber) throws Exception;
 	public List<Article> select(int firstRow,int endRow)throws Exception;
 	public ArticleListModel getArticleList(int requestPageNumber) throws Exception;
