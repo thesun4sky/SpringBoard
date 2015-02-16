@@ -78,7 +78,7 @@ public class Article {
 		this.content = content;
 	}
 	
-	public int getLevel(){
+	public int getLevel(){ //Reply 관련
 		if(sequenceNumber ==null){
 			return -1;
 		}

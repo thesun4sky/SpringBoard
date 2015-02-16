@@ -8,14 +8,19 @@ import com.choi.board.model.Article;
 
 @Component
 public class CalcSeq {
-	
+	/*
+	 * 아마 게시판에서 페이징 보다 어려운 기능은 리플기능인것 같다. 
+	 * 원본 글에 대한 답변 글이 달려 있을경우 원본보다 아래 달려 있어양 한다.
+	 * 페이징시 리플 글에대한 처리는 리스트를 가져올때 이미 세팅 해놓았기 때문에 여기서는 해당 데이터에 대한 값을
+	 * 입력을 잘 해주면 된다.
+	 * */
 	public String getSearchMinSeqNum(Article parent){
 		
 		String parentSeqNum = parent.getSequenceNumber();
 		DecimalFormat decimalFormat = new DecimalFormat("0000000000000000");
 		long parentSeqLongValue = Long.parseLong(parentSeqNum);
 		long searchMinLongValue = 0;
-		switch (parent.getLevel()) {
+		switch (parent.getLevel()) { //여기서 레벨이란 ?? 원본 글에 대한 답변일 경우 0 리플의 리플일 경우 1 리플의 리플의 리플의 경우2 그 이상은 막아 주는게 좋을듯 싶습니다.
 		case 0:
 			searchMinLongValue = parentSeqLongValue / 1000000L * 1000000L;
 			break;

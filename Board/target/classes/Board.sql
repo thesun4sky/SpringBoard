@@ -29,7 +29,7 @@ sequence_no		char(16) 	순서번호
 posting_date	datetime	게시글 등록일
 read_count		int			그룹번호
 writer_name		varchar(20)	작성자 이름
-password		varchar(10)	게시글 암ㅎ
+password		varchar(10)	게시글 암호
 title			varchar(10)	게시글 제목
 content			text		게시글 내용
 

@@ -39,14 +39,16 @@ public class ArticleDaoImpl implements ArticleDao {
 		sql.append("values(?,?,?,0,?,?,?,?)");
 		
 		int groupId = article.getGroupId();
-		if(groupId == 0 ){
+		if(groupId == 0 ){ //글이 리플이 아닌 경우에는 ID Generator를 생성 해주자.
 			groupId = IdGenerator.getInstance().generateNextId("article",jdbcTemplate);
 			article.setGroupId(groupId);
+			//그리고 해당 글에 대한 레벨 역시 초기화를 필요로 한다.
+			DecimalFormat decimalFormat = new DecimalFormat("0000000000");
+			article.setSequenceNumber(decimalFormat.format(groupId)+"999999");
 		}
 		
 		article.setPostingDate(new Date());
-		DecimalFormat decimalFormat = new DecimalFormat("0000000000");
-		article.setSequenceNumber(decimalFormat.format(groupId)+"999999");
+		
 		
 		jdbcTemplate.update(sql.toString(),article.getGroupId(),article.getSequenceNumber()
 				,new Timestamp(article.getPostingDate().getTime())
