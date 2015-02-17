@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,7 +18,7 @@
 
 			<div class="form-group">
 				<label for="writerName">이름</label> 
-				<input type="text" id="writerName" name="writerName" class="form-control" placeholder="이름" value="${article.writerName }"/>
+				<input type="text" id="writerName" name="writerName" class="form-control" placeholder="이름" value="${Article.writerName }"/>
 			</div>
 
 			<div class="form-group">
@@ -27,7 +28,7 @@
 
 			<div class="form-group">
 				<label for="content">내용</label> 
-				<textarea id="content" name="content" class="form-control" cols="40" rows="5" value="${Article.content}"></textarea>
+				<textarea id="content" name="content" class="form-control" cols="40" rows="5">${Article.content}</textarea>
 			</div>
 			
 			<button id="btn_submit" class="btn btn-default">작성</button>

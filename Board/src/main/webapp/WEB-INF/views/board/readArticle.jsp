@@ -84,7 +84,9 @@
 	
 	
 	function pwConfirmAction(id){	
-		$.ajax({
+		
+		$("#mainTable").load("pwConfirm","id="+id+"&action="+articleAction+"&password="+$("#articlePassword").val()+"&currentPage="+currentPage);
+/* 		$.ajax({
 			url:"pwConfirm",
 			type:"post",
 			data: {	"id" : id,
@@ -95,19 +97,11 @@
 			dataType: "json",   // 데이터타입을 JSON형식으로 지정
 			contentType : "application/x-www-form-urlencoded; charset=utf-8",
 			success: function(data,textStaus,jqXHR){
-				console.log("success = " + Json.parse(data));
-				
-				for(var i in data){
-					console.log(data[i]);	
-				}
-				
 			},
 			error:function(jqXHR,textStatus,errorThrown){
-				console.log("success = " + jqXHR);
-				console.log("success = " + textStatus);
-				console.log("success = " + errorThrown);
+
 			}
-		})	
+		}) */	
 	}
 	
 	

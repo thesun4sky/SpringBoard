@@ -62,9 +62,9 @@ public class ArticleDaoImpl implements ArticleDao {
 	}
 
 	@Override
-	public void updeate(Article article) throws Exception {
+	public void update(Article article) throws Exception {
 		// TODO Auto-generated method stub
-
+		
 	}
 
 	@Override
@@ -201,9 +201,6 @@ public class ArticleDaoImpl implements ArticleDao {
 		
 		
 		return jdbcTemplate.queryForObject(sql.toString(),new Object[]{searchMaxSeqNum,searchMinSeqNum},String.class);
-		
-		
-		
 
 	}
 

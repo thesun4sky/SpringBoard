@@ -2,7 +2,9 @@ package com.choi.board;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -161,9 +163,16 @@ public class HomeController {
 		}else{
 			mav.setViewName("home");
 		}
-		System.out.println("돌아가야지 ");
 		return mav;
 	}
 	
+	@RequestMapping(value="updateArticle",method={RequestMethod.GET, RequestMethod.POST})
+	public ModelAndView updateArticle(Article article) throws  Exception{
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("home");
+		return mav;
+	
+	}
 	
 }
